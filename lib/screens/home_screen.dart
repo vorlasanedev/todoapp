@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:todoapp/config/routers/routers.dart';
 import 'package:todoapp/data/data.dart';
 import 'package:todoapp/utils/utils.dart';
 import 'package:todoapp/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
+  //goRouter
+  static HomeScreen builder(BuildContext context, GoRouterState state) =>
+      const HomeScreen();
+
   const HomeScreen({super.key});
 
   @override
@@ -69,16 +75,44 @@ class HomeScreen extends StatelessWidget {
                           category: TaskCategories.education,
                           isCompleted: false,
                         ),
+                        Task(
+                          title: "title2",
+                          note: "note2",
+                          time: "10:00",
+                          date: 'Oct 7,2025',
+                          category: TaskCategories.home,
+                          isCompleted: false,
+                        ),
                       ],
                     ),
                     const Gap(20),
                     Text('Complete', style: context.textTheme.headlineMedium),
                     const Gap(20),
-                    DisplayListOfTasks(tasks: [], isCompletedTasks: true),
+                    DisplayListOfTasks(
+                      tasks: [
+                        Task(
+                          title: "title",
+                          note: "",
+                          time: "10:00",
+                          date: 'Oct 7,2025',
+                          category: TaskCategories.education,
+                          isCompleted: true,
+                        ),
+                        Task(
+                          title: "title2",
+                          note: "note2",
+                          time: "10:00",
+                          date: 'Oct 7,2025',
+                          category: TaskCategories.home,
+                          isCompleted: true,
+                        ),
+                      ],
+                      isCompletedTasks: true,
+                    ),
 
                     const Gap(20),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => context.push(RouteLocation.createTask),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             colors.primary, // Set your desired color here

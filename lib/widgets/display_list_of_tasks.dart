@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:todoapp/data/data.dart';
 import 'package:todoapp/utils/utils.dart';
-import 'package:todoapp/widgets/common_container.dart';
+import 'package:todoapp/widgets/widgets.dart';
 
 class DisplayListOfTasks extends StatelessWidget {
   const DisplayListOfTasks({
@@ -12,7 +11,7 @@ class DisplayListOfTasks extends StatelessWidget {
   });
 
   final List<Task> tasks;
-  final isCompletedTasks;
+  final bool isCompletedTasks;
 
   @override
   Widget build(BuildContext context) {
@@ -33,41 +32,29 @@ class DisplayListOfTasks extends StatelessWidget {
                 style: context.textTheme.headlineSmall,
               ),
             )
-          : ListView.builder(
+          : ListView.separated(
               shrinkWrap: true,
               itemCount: tasks.length,
-              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+              padding: EdgeInsets.zero,
               itemBuilder: (ctx, index) {
-                final task = tasks[index];
-                return Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(9.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: task.category.color.withOpacity(0.3),
-                        border: Border.all(
-                          width: 2,
-                          color: task.category.color,
-                        ),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          task.category.icon,
-                          color: task.category.color,
-                        ),
-                      ),
-                    ),
-                    const Gap(10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text(task.title), Text(task.time)],
-                      ),
-                    ),
-                    Checkbox(value: task.isCompleted, onChanged: (value) {}),
-                  ],
+                return InkWell(
+                  onLongPress: () {
+                    //Todo Delete
+                  },
+                  onTap: () async {
+                    //Todo show task detail
+                    await showModalBottomSheet(
+                      context: context,
+                      builder: (ctx) {
+                        return TaskDetails(tasks[index]);
+                      },
+                    );
+                  },
+                  child: TaskTitle(tasks[index]),
                 );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(thickness: 1.5);
               },
             ),
     );
