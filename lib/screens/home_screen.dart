@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:todoapp/data/data.dart';
 import 'package:todoapp/utils/utils.dart';
-import 'package:todoapp/widgets/display_white_text.dart';
+import 'package:todoapp/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.normal,
                     ),
-                    // const Gap(20),
+                    const Gap(2),
                     DisplayWhiteText(
                       text: 'My Todo List',
                       fontSize: 40,
@@ -39,27 +40,59 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
+              // Expanded(
+              //   child: Container(
+              //     width: deviceSize.width,
+              //     color: colors.secondary,
+              //   ),
+              // ),
+            ],
+          ),
+          Positioned(
+            top: 120,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      width: deviceSize.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: colors.primaryContainer,
+                    DisplayListOfTasks(
+                      tasks: [
+                        Task(
+                          title: "title",
+                          note: "note",
+                          time: "10:00",
+                          date: 'Oct 7,2025',
+                          category: TaskCategories.education,
+                          isCompleted: false,
+                        ),
+                      ],
+                    ),
+                    const Gap(20),
+                    Text('Complete', style: context.textTheme.headlineMedium),
+                    const Gap(20),
+                    DisplayListOfTasks(tasks: [], isCompletedTasks: true),
+
+                    const Gap(20),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            colors.primary, // Set your desired color here
+                        elevation: 4, // Adjust elevation as needed
                       ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 8,
-                        itemBuilder: (ctx, index) {
-                          return Text('Home');
-                        },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: DisplayWhiteText(text: 'Add New task'),
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
