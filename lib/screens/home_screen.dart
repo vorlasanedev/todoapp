@@ -112,7 +112,10 @@ class HomeScreen extends StatelessWidget {
 
                     const Gap(20),
                     ElevatedButton(
-                      onPressed: () => context.push(RouteLocation.createTask),
+                      onPressed: () => context.push(
+                        RouteLocation.createTask,
+                        extra: DateTime.now(),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             colors.primary, // Set your desired color here

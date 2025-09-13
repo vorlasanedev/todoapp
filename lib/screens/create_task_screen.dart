@@ -22,27 +22,30 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return Scaffold(
       appBar: AppBar(title: DisplayWhiteText(text: 'Add new task')),
 
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const CommonTextField(title: 'Task Title', hintText: 'title'),
-            SelectDateTime(),
-            const CommonTextField(
-              title: 'Note',
-              hintText: 'Task note',
-              maxLines: 7,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    colors.primary, // Set your desired button color here
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const CommonTextField(title: 'Task Title', hintText: 'title'),
+              const SelectCategory(),
+              const SelectDateTime(),
+              const CommonTextField(
+                title: 'Note',
+                hintText: 'Task note',
+                maxLines: 7,
               ),
-              onPressed: () {},
-              child: DisplayWhiteText(text: 'Save'),
-            ),
-          ],
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      colors.primary, // Set your desired button color here
+                ),
+                onPressed: () {},
+                child: DisplayWhiteText(text: 'Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );

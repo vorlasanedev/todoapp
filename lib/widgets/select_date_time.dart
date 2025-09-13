@@ -35,7 +35,7 @@ class SelectDateTime extends ConsumerWidget {
             readOnly: true,
             hintText: Helpers.timeToString(time),
             suffixIcon: IconButton(
-              onPressed: () => _selectTime(context),
+              onPressed: () => _selectTime(context, ref),
               icon: FaIcon(FontAwesomeIcons.clock),
             ),
           ),
@@ -44,13 +44,22 @@ class SelectDateTime extends ConsumerWidget {
     );
   }
 
-  void _selectTime(BuildContext context) async {
+  void _selectTime(BuildContext context, WidgetRef ref) async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      // initialTime: TimeOfDay.now(),
+      initialTime: ref.read(timeProvider),
+      // with format shortime
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
+      // end short time. if remove will give 24 hour
     );
     if (pickedTime != null) {
-      // handle time selection if needed
+      ref.read(timeProvider.notifier).state = pickedTime;
     }
   }
 
