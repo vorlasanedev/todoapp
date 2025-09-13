@@ -28,7 +28,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         child: Column(
           children: [
             const CommonTextField(title: 'Task Title', hintText: 'title'),
-            SelectDartTime(),
+            SelectDateTime(),
             const CommonTextField(
               title: 'Note',
               hintText: 'Task note',

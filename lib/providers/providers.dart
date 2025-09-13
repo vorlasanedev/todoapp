@@ -1,1 +1,2 @@
-export 'date_time_privider.dart';
+export 'date_provider.dart';
+export 'time_provider.dart';

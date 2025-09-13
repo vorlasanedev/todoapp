@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:todoapp/providers/providers.dart';
+import 'package:todoapp/utils/helpers.dart';
 import 'package:todoapp/widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectDartTime extends StatelessWidget {
-  const SelectDartTime({super.key});
+class SelectDateTime extends ConsumerWidget {
+  const SelectDateTime({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final date = ref.watch(dateProvider);
+    final time = ref.watch(timeProvider);
+
     return Row(
       children: [
         Expanded(
           child: CommonTextField(
             title: 'Date',
             readOnly: true,
-            hintText: 'Aug 7, 2025',
+            hintText: DateFormat.yMMMd().format(date),
             suffixIcon: IconButton(
-              onPressed: () => _selectDate(context),
+              onPressed: () => _selectDate(context, ref),
               icon: FaIcon(FontAwesomeIcons.calendar),
             ),
           ),
@@ -26,7 +33,7 @@ class SelectDartTime extends StatelessWidget {
           child: CommonTextField(
             title: 'Time',
             readOnly: true,
-            hintText: '10:00',
+            hintText: Helpers.timeToString(time),
             suffixIcon: IconButton(
               onPressed: () => _selectTime(context),
               icon: FaIcon(FontAwesomeIcons.clock),
@@ -37,25 +44,26 @@ class SelectDartTime extends StatelessWidget {
     );
   }
 
-  void _selectTime(BuildContext contex) async {
+  void _selectTime(BuildContext context) async {
     TimeOfDay? pickedTime = await showTimePicker(
-      context: contex,
+      context: context,
       initialTime: TimeOfDay.now(),
     );
     if (pickedTime != null) {
-      // print(pickedTime);
+      // handle time selection if needed
     }
   }
 
-  void _selectDate(BuildContext contex) async {
+  void _selectDate(BuildContext context, WidgetRef ref) async {
+    final initialDate = ref.read(dateProvider);
     DateTime? pickedDate = await showDatePicker(
-      context: contex,
-      initialDate: DateTime.now(),
+      context: context,
+      initialDate: initialDate,
       firstDate: DateTime(2025),
       lastDate: DateTime(2090),
     );
     if (pickedDate != null) {
-      print(pickedDate);
+      ref.read(dateProvider.notifier).state = pickedDate;
     }
   }
 }
