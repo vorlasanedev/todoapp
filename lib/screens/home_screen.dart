@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:todoapp/config/routers/routers.dart';
 import 'package:todoapp/data/data.dart';
-import 'package:todoapp/providers/task/task_provider.dart';
+import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/utils/utils.dart';
 import 'package:todoapp/widgets/widgets.dart';
 
@@ -20,8 +21,11 @@ class HomeScreen extends ConsumerWidget {
     final taskState = ref.watch(taskProvider);
     final colors = context.colorScheme;
     final deviceSize = context.deviceSize;
-    final completedTasks = _completedTasks(taskState.tasks);
-    final incompletedTasks = _incompletedTasks(taskState.tasks);
+    final completedTasks = _completedTasks(taskState.tasks, ref);
+    final incompletedTasks = _incompletedTasks(taskState.tasks, ref);
+
+    // for date on top
+    final selectedDate = ref.watch(dateProvider);
 
     return Scaffold(
       body: Stack(
@@ -38,13 +42,17 @@ class HomeScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    DisplayWhiteText(
-                      text: 'Aug 7, 2025',
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
+                    InkWell(
+                      onTap: () => Helpers.selectDate(context, ref),
+                      child: DisplayWhiteText(
+                        text: DateFormat.yMMMd().format(selectedDate),
+                        // text: 'Aug 7, 2025',
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                     const Gap(2),
-                    DisplayWhiteText(
+                    const DisplayWhiteText(
                       text: 'My Todo List',
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -110,20 +118,24 @@ class HomeScreen extends ConsumerWidget {
   }
 
   // isComplete filter function
-  List<Task> _completedTasks(List<Task> tasks) {
+  List<Task> _completedTasks(List<Task> tasks, WidgetRef ref) {
+    final selectedDate = ref.watch(dateProvider);
     final List<Task> filteredTask = [];
     for (var task in tasks) {
-      if (task.isCompleted) {
+      final isTaskDay = Helpers.isTaskFromSelectedDate(task, selectedDate);
+      if (task.isCompleted && isTaskDay) {
         filteredTask.add(task);
       }
     }
     return filteredTask;
   }
 
-  List<Task> _incompletedTasks(List<Task> tasks) {
+  List<Task> _incompletedTasks(List<Task> tasks, WidgetRef ref) {
+    final selectedDate = ref.watch(dateProvider);
     final List<Task> filteredTask = [];
     for (var task in tasks) {
-      if (!task.isCompleted) {
+      final isTaskDay = Helpers.isTaskFromSelectedDate(task, selectedDate);
+      if (!task.isCompleted && isTaskDay) {
         filteredTask.add(task);
       }
     }
