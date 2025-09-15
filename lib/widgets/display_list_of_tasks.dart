@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/data/data.dart';
+import 'package:todoapp/providers/providers.dart';
 import 'package:todoapp/utils/utils.dart';
 import 'package:todoapp/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,11 +50,23 @@ class DisplayListOfTasks extends ConsumerWidget {
                     await showModalBottomSheet(
                       context: context,
                       builder: (ctx) {
-                        return TaskDetails(tasks[index]);
+                        return TaskDetails(task);
                       },
                     );
                   },
-                  child: TaskTitle(tasks[index]),
+                  child: TaskTitle(
+                    task,
+                    onCompleted: (value) async {
+                      await ref.read(taskProvider.notifier).updateTask(task);
+                      if (!context.mounted) return;
+                      AppAlert.displaySnackBar(
+                        context,
+                        task.isCompleted
+                            ? 'task incompleted'
+                            : 'Task Completed',
+                      );
+                    },
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

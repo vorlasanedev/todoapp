@@ -73,7 +73,10 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     DisplayListOfTasks(tasks: incompletedTasks),
                     const Gap(20),
-                    Text('Complete', style: context.textTheme.headlineMedium),
+                    Text(
+                      'Task Completed',
+                      style: context.textTheme.headlineMedium,
+                    ),
                     const Gap(20),
                     DisplayListOfTasks(
                       tasks: completedTasks,
